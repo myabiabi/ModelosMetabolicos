@@ -1,28 +1,32 @@
+#CARGAR PAQUETES
 import cobra
+#En la documentación usan "import cobra.test" pero ese paquete ya está descontinuado
+#en lugar de eso usar: cobra.io
 import cobra.io
 import cometspy as c
 
-#cobra.io.load_model('textbook')
-# Load a textbook example model using the COBRAPy toolbox 
+#cargar un model
+#Cargue un modelo de ejemplo de libro de texto utilizando la caja de herramientas COBRAPy#antes usaban la función de " cobra.test.create_test_model" pero esa esta descontinuada
+#en vez de eso usar cobra.io.load_model
 test_model = cobra.io.load_model('textbook')
-# Use the above model to create a COMETS model
+
+#Crear un modelo COMETS
 test_model = c.model(test_model)
 
-# Change comets specific parameters, e.g. the initial biomass of the model
-# Notre 
+#Cambiar los parametros
+#initial_pop es para la biomasa inicial
 test_model.initial_pop = [0, 0, 1e-7] 
 
-
-# Create a parameters object with default values 
+#Crear un objeto con los parametros con valores por default
 my_params = c.params()
 
-# Change the value of a parameter, for example number of simulation cycles
+# Cambiar el valor de los parametros, por ejemplo el numero de simulaciones por ciclo
 my_params.set_param('maxCycles', 100)
 
-# Set some writeTotalBiomassLog parameter to True, in order to save the output
+# Para salvar el "output" el parámetro writeTotalBiomassLog tiene que True
 my_params.set_param('writeTotalBiomassLog', True)
 
-# See avaliable parameters and their values
+#Ver parametros disponibles y sus valores
 my_params.show_params()
 
 my_layout = c.layout(test_model)
@@ -37,20 +41,20 @@ import cometspy as c
 import cobra.io
 import matplotlib.pyplot as plt
 
-# Create empty 1x1 layout
+#Crear el layout 1x1
 test_tube = c.layout()
 
-# Add 11mM glucose and remove o2
+#AGregar 11mM de glucosa y remover o2
 test_tube.set_specific_metabolite('glc__D_e', 0.011)
 test_tube.set_specific_metabolite('o2_e', 0)
 
-# Add the rest of nutrients unlimited (ammonia, phosphate, water and protons)
+# Agregar le resto de los nutrientes
 test_tube.set_specific_metabolite('nh4_e',1000);
 test_tube.set_specific_metabolite('pi_e',1000);
 test_tube.set_specific_metabolite('h2o_e',1000);
 test_tube.set_specific_metabolite('h_e',1000);
 
-####################3
+####################
 
 # create the model using CobraPy functionality
 e_coli_cobra = cobra.io.load_model('textbook')
