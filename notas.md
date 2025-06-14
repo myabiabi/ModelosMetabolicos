@@ -112,3 +112,108 @@ C2RQJT_1_rerun_NS_M2_01_25_2.fna
 ~/Documents/practicas/MODELOS/doc/gapseq/gapseq doall ~/Documents/practicas/MODELOS/data/C2RQJT_1_rerun_NS_M2_01_25_2.fna
 
 ```
+
+# 130625
+
+### tutorial gapseq
+
+[referencia](https://github.com/jotech/gapseq/blob/master/docs/tutorials/yogurt.md)
+Después de instalarlo agregar path temporal a gapseq
+
+```
+export PATH=$PATH:$(pwd)
+```
+
+
+```bash
+gapseq find -p all -b 200 -m auto -t auto $modelA.faa.gz
+```
+error:
+```bash
+Error in library(httr) : there is no package called ‘httr’
+Execution halted
+md5sum: 1.3.1.8.fasta: No such file or directory
+cat: 1.3.1.8.fasta: No such file or directory
+		Downloading unreviewed sequences for: 1.3.1.8
+```
+¿Qué pasó?
+el paquete httr de R no está instalado
+
+¿Cómo solucionarlo? 
+
+```bash
+R
+install.packages("httr")
+library(httr)
+q()
+```
+LO vuelvo a correr
+
+```bash
+gapseq find -p all -b 200 -m auto -t auto $modelA.faa.gz
+```
+Error: 
+```
+Error in library(stringr) : there is no package called ‘stringr’
+Execution halted
+md5sum: 0e9279fadf0e6dab0a8e78912d5a37d4.fasta: No such file or directory
+cat: 0e9279fadf0e6dab0a8e78912d5a37d4.fasta: No such file or directory
+		Downloading unreviewed sequences for: 2,4-dichloro-cis,cis-muconate dehalogenase 
+		(hash: 0e9279fadf0e6dab0a8e78912d5a37d4)
+```
+¿Qué pasó? ocupo el paquete de R "stringr"
+
+Paquetes necesarios: 
+* httr (para descargar datos vía HTTP)
+
+* stringr (para manipulación de strings)
+
+* jsonlite (para manejar JSON)
+
+* data.table (para manejo eficiente de tablas)
+
+* dplyr (para manipulación de datos)
+
+* tidyr (para ordenar y limpiar datos)
+
+* magrittr (para usar pipes %>%)
+
+* curl (para conexiones HTTP)
+
+```
+sudo R -e "install.packages(c('httr','stringr','jsonlite','data.table','dplyr','tidyr','magrittr','curl'), repos='https://cloud.r-project.org')"
+
+R
+
+library(httr)
+library(stringr)
+library(jsonlite)
+library(data.table)
+library(dplyr)
+library(tidyr)
+library(magrittr)
+library(curl)
+
+q()
+
+```
+Vuelvo a correr el mismo código
+
+```
+gapseq find -p all -b 200 -m auto -t auto $modelA.faa.gz
+```
+Ya jaló
+
+```
+3339 s
+```
+pero según yo fue 1:15 (de las 3:57-5:11)
+
+siguiendo con el tutorial
+```
+gapseq find -p all -b 200 -m auto -t auto $modelB.faa.gz
+
+```
+de las 18:05 a 
+
+
