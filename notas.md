@@ -1073,13 +1073,114 @@ gapseq find-transport -b 200 $C2R.faa
 gapseq draft -r $RC3-all-Reactions.tbl -t $RC3-Transporter.tbl -p $RC3-all-Pathways.tbl -u 200 -l 100 -c $RC3.faa
 gapseq draft -r $C2R-all-Reactions.tbl -t $C2R-Transporter.tbl -p $C2R-all-Pathways.tbl -u 200 -l 100 -c $C2R.faa
 ```
+
+
 (4) Relleno de huecos
 NOTA: se ocupa el medio, algunos vienen en: gapseq/dat/media
 ```
 gapseq fill -m $RC3-draft.RDS -n LBmed.csv -c $RC3-rxnWeights.RDS -g $RC3-rxnXgenes.RDS -b 100
+```
 
+```
+LP solver: glpk 
+Loading model files bac1-draft.RDS 
+using media file LBmed.csv 
+
+
+1. Initial gapfilling: Make model grow on given media using all reactions
+Utilized candidate reactions:  50
+Gapfill summary:
+Added reactions:       34 
+Added core reactions:  6 
+Final growth rate:     1.034122 
+
+
+2. Biomass gapfilling using core reactions only
+Gapfill summary:
+Filled components:     0 (  )
+Added reactions:       0 
+Final growth rate:     1.034122 
+
+
+2b. Anaerobic biomass gapfilling using core reactions only
+Gapfill summary:
+Filled components:     0 (  )
+Added reactions:       0 
+Final growth rate:     1.034122 
+
+3. Energy source gapfilling with core reactions only
+Gapfill summary:
+Filled components:     9 ( L-Lysine-e0,D-Mannitol-e0,D-Galacturonate-e0,D-Galactonate-e0,L-Idonate-e0,4-Hydroxybenzoate-e0,CELB-e0,Xylitol-e0,Formate-e0 )
+Added reactions:       19 
+Final growth rate:     1.066292 
+
+
+4. Checking for potential metabolic products with core reactions only
+Gapfill summary:
+Filled components:     3 ( L-Inositol-e0,NAD-e0,Agmatine-e0 )
+Added reactions:       3 
+Final growth rate:     1.066292 
+
+Uptake at limit:
+L-Glutamate:1, L-Lysine:1, L-Aspartate:1, L-Arginine:1, L-Leucine:1, L-Histidine:1, L-Proline:1, L-Threonine:1, L-Isoleucine:1, H+:0.1, Uracil:0.1, Uridine:0.1, Guanosine:0.1, L-Alanine:1, L-Cysteine:1, L-Serine:1, O2:10, Adenosine:0.1, Inosine:0.1, Thiamine phosphate:0.1 
+
+Top 10 produced metabolites [mmol / (gDW * hr)]:
+CO2:8.681, NH3:8.337, H2O:5.162, Acetate:3.319, Formate:3.012, H2S:0.895, Oxalate:0.848, Urea:0.701, Propionate:0.617, Succinate:0.225 
+
+```
+```
 gapseq fill -m $C2R-draft.RDS -n LBmed.csv -c $C2R-rxnWeights.RDS -g $C2R-rxnXgenes.RDS -b 100
 ```
+```
+rxnWeights.RDS -g $C2R-rxnXgenes.RDS -b 100
+LP solver: glpk 
+Loading model files bac2-draft.RDS 
+using media file LBmed.csv 
+
+
+1. Initial gapfilling: Make model grow on given media using all reactions
+Utilized candidate reactions:  53
+Gapfill summary:
+Added reactions:       49 
+Added core reactions:  6 
+Final growth rate:     0.6453282 
+
+
+2. Biomass gapfilling using core reactions only
+Gapfill summary:
+Filled components:     2 ( TPP-c0,CoA-c0 )
+Added reactions:       2 
+Final growth rate:     0.6453282 
+
+
+2b. Anaerobic biomass gapfilling using core reactions only
+Gapfill summary:
+Filled components:     0 (  )
+Added reactions:       2 
+Final growth rate:     0.6453282 
+
+
+3. Energy source gapfilling with core reactions only
+Gapfill summary:
+Filled components:     17 ( Cholate-e0,L-Lysine-e0,Guanosine-e0,Glycolate-e0,GABA-e0,D-Mannitol-e0,Ribitol-e0,L-Idonate-e0,Maltotetraose-e0,Maltoheptaose-e0,Stachyose-e0,N-Acetyl-D-chondrosamine-e0,Melibiose-e0,Formate-e0,Taurocholate-e0,Taurochenodeoxycholate-e0,Oxalate-e0 )
+Added reactions:       48 
+Final growth rate:     0.6843105 
+
+4. Checking for potential metabolic products with core reactions only
+Gapfill summary:
+Filled components:     7 ( Galactose-e0,L-Inositol-e0,Neu5Ac-e0,NAD-e0,NADP-e0,GTP-e0,Agmatine-e0 )
+Added reactions:       9 
+Final growth rate:     0.6843105 
+
+Uptake at limit:
+Glycine:1, L-Glutamate:1, L-Lysine:1, L-Aspartate:1, L-Arginine:1, L-Proline:1, L-Threonine:1, L-Isoleucine:1, H+:0.1, Uridine:0.1, Guanosine:0.1, L-Alanine:1, L-Methionine:1, L-Cysteine:1, L-Serine:1, Inosine:0.1, Adenosine:0.1, O2:10, Thiamine phosphate:0.1 
+
+Top 10 produced metabolites [mmol / (gDW * hr)]:
+CO2:10.896, NH3:10.583, Acetate:4.919, Formate:2.567, H2O:1.144, Propionate:1.136, H2S:0.955, MTTL:0.895, Urea:0.84, Butyrate:0.743 
+
+```
+
+
 
 * Usar R desde bash
 * 
