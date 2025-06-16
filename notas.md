@@ -1057,7 +1057,9 @@ c) Construir modelo metabólico
 gapseq find -p all -b 200 -m auto -t auto $RC3.faa
 gapseq find -p all -b 200 -m auto -t auto $C2R.faa
 ```
-duración: 
+duración: 3329 s
+✅✅✅
+
 (2) Predicción de transportadores
 
 ```
@@ -1068,13 +1070,15 @@ gapseq find-transport -b 200 $C2R.faa
 (3) Reconstrucción del borrador del modelo 
 
 ```
-gapseq draft -r $modelA-all-Reactions.tbl -t $RC3-Transporter.tbl -p $RC3-all-Pathways.tbl -u 200 -l 100 -c $RC3.faa
+gapseq draft -r $RC3-all-Reactions.tbl -t $RC3-Transporter.tbl -p $RC3-all-Pathways.tbl -u 200 -l 100 -c $RC3.faa
 gapseq draft -r $C2R-all-Reactions.tbl -t $C2R-Transporter.tbl -p $C2R-all-Pathways.tbl -u 200 -l 100 -c $C2R.faa
 ```
 (4) Relleno de huecos
-NOTA: se ocupa el medio
+NOTA: se ocupa el medio, algunos vienen en: gapseq/dat/media
 ```
+gapseq fill -m $RC3-draft.RDS -n LBmed.csv -c $RC3-rxnWeights.RDS -g $RC3-rxnXgenes.RDS -b 100
 
+gapseq fill -m $C2R-draft.RDS -n LBmed.csv -c $C2R-rxnWeights.RDS -g $C2R-rxnXgenes.RDS -b 100
 ```
 
 * Usar R desde bash
