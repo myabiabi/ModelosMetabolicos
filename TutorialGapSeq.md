@@ -68,7 +68,8 @@ RC3="bac1"
 C2R="bac2"
 ```
 
-## 🐝 Análisis 
+## 🐝
+ Análisis 
 
 ### a) Construir modelo metabólico 
 Predicción de reacciones y vías 
@@ -112,7 +113,16 @@ gapseq draft -r $C2R-all-Reactions.tbl -t $C2R-Transporter.tbl -p $C2R-all-Pathw
 ```
 
 ### d) Relleno de huecos
+**¿para que?**
+El _gap filling_ es una técnica computacional utilizada para mejorar la precisión y la integridad de los modelos metabólicos o ensamblajes genómicos mediante la identificación y resolución de información faltante o incompleta.
 
+Se usa para:
+
+* Detección de lagunas en el modelo donde se requiere una reacción para completar una vía o permitir una función metabólica específica.
+
+* Sugerencia de añadir reacciones de bases de datos u otras fuentes para subsanar estas lagunas.
+
+* Identificación de los genes responsables de las nuevas reacciones.
 ```
 gapseq fill -m $RC3-draft.RDS -n LBmed.csv -c $RC3-rxnWeights.RDS -g $RC3-rxnXgenes.RDS -b 100
 ```
