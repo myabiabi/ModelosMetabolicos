@@ -115,7 +115,6 @@ gapseq draft -r $C2R-all-Reactions.tbl -t $C2R-Transporter.tbl -p $C2R-all-Pathw
 ### d) Relleno de huecos
 **¿para que?**
 El _gap filling_ es una técnica computacional utilizada para mejorar la precisión y la integridad de los modelos metabólicos o ensamblajes genómicos mediante la identificación y resolución de información faltante o incompleta.
-
 Se usa para:
 
 * Detección de lagunas en el modelo donde se requiere una reacción para completar una vía o permitir una función metabólica específica.
