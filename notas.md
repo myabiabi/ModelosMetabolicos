@@ -1060,6 +1060,7 @@ gapseq find -p all -b 200 -m auto -t auto $C2R.faa
 duración: 3329 s
 ✅✅✅
 
+
 (2) Predicción de transportadores
 
 ```
@@ -1183,4 +1184,156 @@ CO2:10.896, NH3:10.583, Acetate:4.919, Formate:2.567, H2O:1.144, Propionate:1.13
 
 
 * Usar R desde bash
-* 
+
+# 061725
+
+
+
+
+# 061825
+
+Modelo consenso
+
+Workflow para construirlo
+1. cargar ''options''
+2. Convertir el borrador de los modelos (draft model) a un modelo MNXref
+3. renombrar todos los reaciiones de intercambio y biomasa de los modelos
+4. agregar metabolitos
+5. fusionar modelos
+6. agregar biomasa universal
+
+ [Referencia](https://zenodo.org/records/10289699)
+
+ Este protocolo es de MATLAB, voy a pasarlo a Python
+
+ 1. load options
+
+este archivo es del tipo ".m" lo primero que voy a hacer es pasarlo a ".py"
+comando de ML que PYTHON no reconoce:
+
+"cd" para cambiar de directorio
+
+remplazarlo con:
+
+```bash 
+   #options
+
+#Options for COMMIT
+
+#~~~~~~~~~~~~~ General settings ~~~~~~~~~~~~~%
+
+#handling of warnings
+#warning('off', 'all')
+
+#number of parallel workers
+ncpu = 20;
+
+#habitat
+habitat = {'coral','seawater'};
+
+#experiments to be analyzed
+experiments = {'coral_proj'};
+
+#path to COMMIT top directory
+topDir = '~/COMMIT';
+
+#medium file
+mediumFile = 'data/media/M9-medium.mat';
+LB_mediumFile = 'data/media/LB-medium.mat';
+
+#directory for auxotrophy media (files must be of form 'model id'.tsv)
+#optional: Remove the following line or set mediaDir='' if you do not want
+#to use auxotrophic media to fill gaps in the first model of each
+#iteration. The minimal medium given above will be used instead.
+#directory for auxotrophy media (files must be of form 'model id'.tsv)
+mediaDir = '';
+
+#top directory for OTU abundance (subdirectories must be habitat >
+#experiment > otutab.txt
+#optional: remove the following line or set otuDir='' if you do not want
+#to use OTU abundances to select at subset of models found the experiment
+# and just use all models
+otuDir = 'data/otu-abundances/';
+
+#threshold for the biomass reaction
+epsilon = 1E-3;
+
+#number of iterations for the iterative approach
+iterations = 100;
+
+#print level
+verbose = true;
+
+#provide an order for iterative gap filling (optional)
+order = [];
+
+#whether or not sink reactions should be included in the gap-filling
+# objective
+include_sink = false;
+
+# change to working directory
+###cambiar cd porque en python no lo reconoce por 
+###cd(topDir) (original)
+import os 
+# Get the current working directory (optional, for verification)
+current_directory = os.getcwd()
+print(f"Current working directory: {current_directory}")
+
+#########ya para moverme y remplazar el comando de MT
+os.chdir(topDir)
+    print(f"Changed working directory to: {os.getcwd()}")
+except FileNotFoundError:
+    print(f"Error: Directory not found - {topDir}")
+except Exception as e:
+    print(f"An error occurred: {e}")
+# add all matlab scripts to path
+#addpath(genpath('code/matlab')) segun yo no es necesario pq estoy en python
+
+#%~~~~~~~~~~~~~ Model workspace and output directory ~~~~~~~~~~~~~%
+
+# location where draft models are stored
+modelDir = 'data/models/';
+
+tmp_spec = '_all';
+
+#%~~~~~~~~~~~~~ Gap-filling resources ~~~~~~~~~~~~~%
+
+#file for the database
+dbFile = 'data/gap-filling/database/Universal-model-MNXref-balanced.mat';
+
+# path to sequence similarity workspace
+seq_sim_workspace = '';
+
+
+#~~~~~~~~~~~~~ Reaction-type-specific weights ~~~~~~~~~~~~~%
+
+# reactions with sequence evidence (E <= 1E-6) 
+weights.sequence = 25;
+#% transport reactions
+weights.transport = 100;
+#% transport reactions operating on highly-permeable metabolites
+weights.permeable = 50;
+#% general weight for metabolic reactions
+weights.metabolic = 50;
+#weight for making a reaction reversible
+weights.reverse = 25;
+# weight for exchange reactions from the database
+weights.exchange = 100000;
+# weight for allowed exchange / uptake reactions (from previous solutions)
+weights.uptake = 1;
+# weight for sink reactions if they should be determined in the gap-filling program
+weights.sink = 0;
+# weights for reactions already contained in the model
+weights.model = 0;
+
+#~~~~~~~~~~~~~ metabolite classification resources ~~~~~~~~~~~~~%
+
+# ChEBI ontology DAG workspace
+chebiOntologyWS = 'data/metabolite-classification/ontologyGraph.mat';
+
+# tab-separated ontology file
+ontologyFile = 'data/metabolite-classification/chebi_ontology.csv';
+
+# brite Hierarchy file
+briteFile = 'data/metabolite-classification/briteHierarchy_ext.csv';
+```
