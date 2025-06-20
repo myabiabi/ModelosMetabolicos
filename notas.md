@@ -1337,3 +1337,31 @@ ontologyFile = 'data/metabolite-classification/chebi_ontology.csv';
 # brite Hierarchy file
 briteFile = 'data/metabolite-classification/briteHierarchy_ext.csv';
 ```
+# 062025
+
+las siguientes comando no existen en Python ya que vienen de MAtLAb, tengo que encontrar como hacer la función equivalente
+
+1. translateIDs
+2. translateModel
+3. removeDuplicateMets
+4. load_universal_model
+5. removeDuplica
+
+### instalar octave 
+
+```bash 
+sudo apt install octave
+octave
+```
+para usarlo desde la terminal:
+
+```bash 
+octave
+```
+
+Para usarlo con una interfaz
+```bash
+octave --gui
+```
+
+###traducir de mathlab a python
