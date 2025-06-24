@@ -1365,3 +1365,13 @@ octave --gui
 ```
 
 ###traducir de mathlab a python
+
+# 062425
+
+¿Cómo construir un modelo metabólico a escala genómica en **kbase**
+
+
+1. El genoma debe estar anotado o re-anotado con RAST, esto antes de crear un borrador del modelo metabólico de un organismo, es necesario porque las anotaciones funcionales SEED generadas por RAST están vinculadas directamente a las reacciones bioquímicas en la base de datos de bioquímica ModelSEED, utilizada por KBase para el modelado metabólico. 
+2. Construye un borrador de tu modelo metabolico con la app de: MS2 - Build Prokaryotic Metabolic Models
+3. Carga tu medio 
+4. Construye el modelo y rellena huecos en el medio mínimo
