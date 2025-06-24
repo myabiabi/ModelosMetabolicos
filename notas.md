@@ -1377,3 +1377,5 @@ octave --gui
 4. Construye el modelo y rellena huecos en el medio mínimo
 
 En kbase descagué el archivo que tiene para el medio LB y dividí los valores por 10 para hacer medio lb al 10%, lo cargué como objeto .tsv y lo subí como (import as) ''media'', no ha cargado la reconstrucción del modelo pero si cargó como medio 
+
+si me generó el modelo que ocupo, mañana correr en gapseq a primera hora pa no tardarme tanto
