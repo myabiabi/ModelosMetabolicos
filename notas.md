@@ -1379,3 +1379,21 @@ octave --gui
 En kbase descagué el archivo que tiene para el medio LB y dividí los valores por 10 para hacer medio lb al 10%, lo cargué como objeto .tsv y lo subí como (import as) ''media'', no ha cargado la reconstrucción del modelo pero si cargó como medio 
 
 si me generó el modelo que ocupo, mañana correr en gapseq a primera hora pa no tardarme tanto
+
+# 062525
+```
+gapseq fill -m $RC3-draft.RDS -n LBmed.csv -c $RC3-rxnWeights.RDS -g $RC3-rxnXgenes.RDS -b 100
+```
+
+```bash
+gapseq fill -m $bac1-draft.RDS -n LBmed_10percent.csv -c $bac1-rxnWeights.RDS -g $bac1-rxnXgenes.RDS -b 100
+```
+```bash
+gapseq draft -r $RC30-all-Reactions.tbl -t $RC30-Transporter.tbl -p $RC30-all-Pathways.tbl -u 200 -l 100 -c $RC30.faa
+
+
+gapseq fill -m $RC30-draft.RDS -n LBmed_10percent.csv -c $RC30-rxnWeights.RDS -g $RC30-rxnXgenes.RDS -b 100
+
+```
+
+Ya corrió con medios LB al 10%, el docuemnto del medio debe estar en la carpeta principal de gapseq para que lo lea o poner la ruta para que lea la dirección completa de gapseaq/data/media/lb
