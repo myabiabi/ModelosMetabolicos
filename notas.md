@@ -1394,6 +1394,13 @@ gapseq draft -r $RC30-all-Reactions.tbl -t $RC30-Transporter.tbl -p $RC30-all-Pa
 
 gapseq fill -m $RC30-draft.RDS -n LBmed_10percent.csv -c $RC30-rxnWeights.RDS -g $RC30-rxnXgenes.RDS -b 100
 
+
+gapseq draft -r $C20R-all-Reactions.tbl -t $C20R-Transporter.tbl -p $C20R-all-Pathways.tbl -u 200 -l 100 -c $C20R.faa
+
+
+gapseq fill -m $C20R-draft.RDS -n LBmed_10percent.csv -c $C20R-rxnWeights.RDS -g $C20R-rxnXgenes.RDS -b 100
+
+
 ```
 
 Ya corrió con medios LB al 10%, el docuemnto del medio debe estar en la carpeta principal de gapseq para que lo lea o poner la ruta para que lea la dirección completa de gapseaq/data/media/lb
