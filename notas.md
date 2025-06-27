@@ -1404,3 +1404,6 @@ gapseq fill -m $C20R-draft.RDS -n LBmed_10percent.csv -c $C20R-rxnWeights.RDS -g
 ```
 
 Ya corrió con medios LB al 10%, el docuemnto del medio debe estar en la carpeta principal de gapseq para que lo lea o poner la ruta para que lea la dirección completa de gapseaq/data/media/lb
+
+# 062725
+
