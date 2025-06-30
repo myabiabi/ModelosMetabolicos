@@ -110,7 +110,7 @@ ax.legend(('acetate','ethanol', 'formate', 'glucose'))
 ax.set_ylabel("Concentration (mmol)")
 
 # Guardar figura en la carpeta
-output_path = os.path.join(output_folder, 'concentraciones.png')
+output_path = os.path.join(output_folder, 'concentraciones_3006.png')
 plt.savefig(output_path)
 
 # Mostrar figura
