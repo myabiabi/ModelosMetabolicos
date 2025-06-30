@@ -1407,3 +1407,194 @@ Ya corrió con medios LB al 10%, el docuemnto del medio debe estar en la carpeta
 
 # 062725
 
+# 063025
+¿cómo ver la lista de metabolitos de mi gem??
+from cobra import io
+
+```bash
+ruta_RC3 = '/home/abigaylmontantearenas/Documents/practicas/MODELOS/data/GEM/cvm_RC3.xml'
+model = cobra.io.read_sbml_model(ruta_RC3) 
+
+for metabolite in model.metabolites:
+    print(f"{metabolite.id}\t{metabolite.name}\t{metabolite.compartment}")
+```
+con estos nutrientes si corrió
+```bash 
+test_tube.set_specific_metabolite("h2o_e", 100)
+test_tube.set_specific_metabolite("o2_e", 10)
+test_tube.set_specific_metabolite("pi_e", 10)
+test_tube.set_specific_metabolite("glu__L_e", 0.1)
+test_tube.set_specific_metabolite("gly_e", 0.1)
+test_tube.set_specific_metabolite("zn2_e", 10)
+test_tube.set_specific_metabolite("ala__L_e", 0.1)
+test_tube.set_specific_metabolite("lys_L_e", 0.1)
+test_tube.set_specific_metabolite("asp_L_e", 0.1)
+```
+
+```bash
+# Add glucose to the media 
+test_tube.set_specific_metabolite("h2o_e", 100)
+test_tube.set_specific_metabolite("o2_e", 10)
+###
+test_tube.set_specific_metabolite("pi_e", 10)
+test_tube.set_specific_metabolite("prbamp_c", 10)
+test_tube.set_specific_metabolite("glu__L_e", 0.1)
+test_tube.set_specific_metabolite("mg2_e", 0.1)
+test_tube.set_specific_metabolite("gly_e", 0.1)
+test_tube.set_specific_metabolite("zn2_e", 10)
+test_tube.set_specific_metabolite("ala__L_e", 0.1)
+test_tube.set_specific_metabolite("lys_L_e", 0.1)
+test_tube.set_specific_metabolite("asp_L_e", 0.1)
+test_tube.set_specific_metabolite("so4_e", 0.1)
+test_tube.set_specific_metabolite("arg__L_e", 0.1)
+test_tube.set_specific_metabolite("ser__L_e", 0.1)
+test_tube.set_specific_metabolite("cu2_e", 0.1)
+test_tube.set_specific_metabolite("met__L_e", 0.1)
+test_tube.set_specific_metabolite("trp__L_e", 0.1)
+test_tube.set_specific_metabolite("phe__L_e", 0.1)
+test_tube.set_specific_metabolite("h_e ", 0.1)
+test_tube.set_specific_metabolite("tyr__L_e", 0.1)
+test_tube.set_specific_metabolite("cys__L_e", 0.1)
+test_tube.set_specific_metabolite("ura_e ", 0.1)
+test_tube.set_specific_metabolite("cl_e", 0.1)
+###
+test_tube.set_specific_metabolite("leu__L_e", 0.1) 
+test_tube.set_specific_metabolite("his__L_e", 0.1)
+test_tube.set_specific_metabolite("pro__L_e", 0.1)
+test_tube.set_specific_metabolite("cobalt2_e", 10)
+test_tube.set_specific_metabolite("val__L_e", 0.1)
+test_tube.set_specific_metabolite("thr__L_e", 0.1)
+test_tube.set_specific_metabolite("adn_e", 0.01)
+test_tube.set_specific_metabolite("thymd_e", 0.01)
+test_tube.set_specific_metabolite("k_e", 10)
+test_tube.set_specific_metabolite("h2s_e", 0.01)
+test_tube.set_specific_metabolite("ins_e", 0.01)
+test_tube.set_specific_metabolite("uri_e", 0.01)
+test_tube.set_specific_metabolite("mg2_e", 10)
+test_tube.set_specific_metabolite("gsn_c", 0.01)
+test_tube.set_specific_metabolite("ile__L_e", 0.1)
+test_tube.set_specific_metabolite("cys__L_e", 0.1)
+test_tube.set_specific_metabolite("skm_c", 0.01)
+test_tube.set_specific_metabolite("fol_e", 0.01)
+test_tube.set_specific_metabolite("dadn_e", 0.01)
+test_tube.set_specific_metabolite("lipoate_e", 0.01)
+test_tube.set_specific_metabolite("na1_e", 10)
+test_tube.set_specific_metabolite("cd2_e", 10)
+test_tube.set_specific_metabolite("aso4_e", 10)
+test_tube.set_specific_metabolite("fe2_e", 10)
+test_tube.set_specific_metabolite("fe3_e", 10)
+test_tube.set_specific_metabolite("cro4_p", 10)
+test_tube.set_specific_metabolite("nh3_c", 10)
+```
+
+en algunos metabolistos, marca este error: 
+
+_Warning_ : The added metabolite (cro4_p) is not able to be taken up by any of the current models
+
+```bash
+
+# add the models to the test tube
+test_tube.add_model(C2R)
+test_tube.add_model(RC3)
+
+# 
+test_tube.set_specific_metabolite("h2o_e", 100)
+test_tube.set_specific_metabolite("o2_e", 10)
+###
+test_tube.set_specific_metabolite("pi_e", 10)
+#test_tube.set_specific_metabolite("prbamp_e", 10)
+#Warning: The added metabolite (prbamp_e) is not able to be taken up by any of the current models
+test_tube.set_specific_metabolite("glu__L_e", 0.1)
+test_tube.set_specific_metabolite("mg2_e", 0.1)
+test_tube.set_specific_metabolite("gly_e", 0.1)
+test_tube.set_specific_metabolite("zn2_e", 10)
+test_tube.set_specific_metabolite("ala__L_e", 0.1)
+#test_tube.set_specific_metabolite("lys_L_e", 0.1)
+#Warning: The added metabolite (lys_L_e) is not able to be taken up by any of the current models
+#test_tube.set_specific_metabolite("asp_L_e", 0.1)
+#Warning: The added metabolite (asp_L_e) is not able to be taken up by any of the current models
+test_tube.set_specific_metabolite("so4_e", 0.1)
+test_tube.set_specific_metabolite("arg__L_e", 0.1)
+test_tube.set_specific_metabolite("ser__L_e", 0.1)
+test_tube.set_specific_metabolite("cu2_e", 0.1)
+test_tube.set_specific_metabolite("met__L_e", 0.1)
+test_tube.set_specific_metabolite("trp__L_e", 0.1)
+test_tube.set_specific_metabolite("phe__L_e", 0.1)
+test_tube.set_specific_metabolite("h_e", 0.1)
+test_tube.set_specific_metabolite("tyr__L_e", 0.1)
+test_tube.set_specific_metabolite("cys__L_e", 0.1)
+test_tube.set_specific_metabolite("ura_e", 0.1)
+test_tube.set_specific_metabolite("cl_e", 0.1)
+###
+test_tube.set_specific_metabolite("leu__L_e", 0.1) 
+test_tube.set_specific_metabolite("his__L_e", 0.1)
+test_tube.set_specific_metabolite("pro__L_e", 0.1)
+test_tube.set_specific_metabolite("cobalt2_e", 10)
+test_tube.set_specific_metabolite("val__L_e", 0.1)
+test_tube.set_specific_metabolite("thr__L_e", 0.1)
+#test_tube.set_specific_metabolite("adn_e", 0.01)
+#Warning: The added metabolite (adn_p) is not able to be taken up by any of the current models
+test_tube.set_specific_metabolite("thymd_e", 0.01)
+test_tube.set_specific_metabolite("k_e", 10)
+test_tube.set_specific_metabolite("h2s_e", 0.01)
+test_tube.set_specific_metabolite("ins_e", 0.01)
+test_tube.set_specific_metabolite("uri_e", 0.01)
+test_tube.set_specific_metabolite("mg2_e", 10)
+#test_tube.set_specific_metabolite("gsn_c", 0.01)
+#Warning: The added metabolite (gsn_c) is not able to be taken up by any of the current models
+test_tube.set_specific_metabolite("ile__L_e", 0.1)
+test_tube.set_specific_metabolite("cys__L_e", 0.1)
+#test_tube.set_specific_metabolite("skm_c", 0.01)
+#Warning: The added metabolite (skm_c) is not able to be taken up by any of the current models
+test_tube.set_specific_metabolite("fol_e", 0.01)
+#test_tube.set_specific_metabolite("dadn_e", 0.01)
+#Warning: The added metabolite (dadn_e) is not able to be taken up by any of the current models
+test_tube.set_specific_metabolite("lipoate_e", 0.01)
+test_tube.set_specific_metabolite("na1_e", 10)
+test_tube.set_specific_metabolite("cd2_e", 10)
+test_tube.set_specific_metabolite("aso4_e", 10)
+test_tube.set_specific_metabolite("fe2_e", 10)
+test_tube.set_specific_metabolite("fe3_e", 10)
+#test_tube.set_specific_metabolite("cro4_e", 10)
+#Warning: The added metabolite (cro4_p) is not able to be taken up by any of the current models
+#test_tube.set_specific_metabolite("nh3_c", 10)
+#Warning: The added metabolite (cro4_p) is not able to be taken up by any of the current models
+```
+
+para asignar los recursos son las dos siguientes lineas de código: 
+```bash
+# Add glucose to the media 
+test_tube.set_specific_metabolite('glc__D_e', 0.01)
+
+# Add typical trace metabolites and oxygen coli as static
+trace_metabolites = ['ca2_e', 'cl_e', 'cobalt2_e', 'cu2_e', 'fe2_e', 'fe3_e', 'h_e', 'k_e', 'h2o_e', 'mg2_e',
+                     'mn2_e', 'mobd_e', 'na1_e', 'ni2_e', 'nh4_e', 'o2_e', 'pi_e', 'so4_e', 'zn2_e']
+
+for i in trace_metabolites:
+    test_tube.set_specific_metabolite(i, 1000)
+    test_tube.set_specific_static(i, 1000)
+
+```
+¿Para que son cada una?? 
+1er bloque: # Add glucose to the media 
+test_tube.set_specific_metabolite('glc__D_e', 0.01)
+
+* solo se está añadiendo glucosa (glc__D_e).
+* 0.01 (un valor bajo, típico en simulaciones de consumo
+* set_specific_metabolite implica que se puede consumir y su concentración se actualiza dinámicamente durante la simulación.
+* dinámico, como un nutriente limitado que se agota
+
+2do bloque: trace_metabolites = ['ca2_e', 'cl_e', 'cobalt2_e', 'cu2_e', 'fe2_e', 'fe3_e', 'h_e', 'k_e', 'h2o_e', 'mg2_e',
+                     'mn2_e', 'mobd_e', 'na1_e', 'ni2_e', 'nh4_e', 'o2_e', 'pi_e', 'so4_e', 'zn2_e']
+
+for i in trace_metabolites:
+    test_tube.set_specific_metabolite(i, 1000)
+    test_tube.set_specific_static(i, 1000)
+
+* elementos traza esenciales (sales, iones, oxígeno, agua...).
+* 1000 para que no limiten el crecimiento
+* set_specific_metabolite(i, 1000): como en la línea 1, los pone en el medio.
+* set_specific_static(i, 1000): los deja con concentración fija — no se agotan, no cambian.
+* estáticos, permanecen constantes durante la simulación, como si fueran ilimitados.
+
+ver otros parametros
