@@ -170,3 +170,5 @@ myplot.set_ylabel("Biomass (gr.)")
 output_folder = 'graficas/competition_assay/C2R_RC3'
 output_path = os.path.join(output_folder, '0704_C2R_RC3_competencia_1.png')
 plt.savefig(output_path)
+
+#funcional
