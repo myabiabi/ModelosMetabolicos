@@ -66,6 +66,7 @@ linux-gnu
 git init
 git add .
 git remote add origin https://github.com/myabiabi/Modelos-Metab-licos-.git
+https://github.com/myabiabi/ModelosMetabolicos.git
 ```
 ### Guardar, comit y push
 Primero guardar el scrip que tengo
