@@ -93,7 +93,7 @@ biomass['transfer'] = biomass['cycle'] * comp_assay.parameters.all_params['timeS
 myplot = biomass.drop(columns=['cycle']).plot(x = 'transfer')
 myplot.set_ylabel("Biomass (gr.)")
 
-output_folder = 'graficas/competition_assay/documentacion'
+output_folder = 'graficas'
 output_path = os.path.join(output_folder, '0630_2.png')
 plt.savefig(output_path)
 

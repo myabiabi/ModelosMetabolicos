@@ -1,6 +1,6 @@
 # 20250606
 
-# RECONSTRUCCION DE GEM
+## RECONSTRUCCION DE GEM
 ## CarveMe
 ### ¿Qué hace?
 
@@ -61,7 +61,6 @@ linux-gnu
 
 # 092524
 
-# Subir scrips a github
 ### vincular con un repositorio
 ```bash
 git init
@@ -82,7 +81,7 @@ Refesh gitbub
 Puede ser utilizado para predecir _rutas metabólicas_ y por el otro lado sirve para reconstruir _redes metabólicas_ 
 
 En un inicio todas las predicciones pueden ser hechas con: 
-# ejemplo documentación
+## ejemplo documentación
 
 ```b
 ./gapseq doall toy/myb71.fna.gz
@@ -90,7 +89,7 @@ En un inicio todas las predicciones pueden ser hechas con:
 ```
 
 Para correrlo tienes que especificar la dirección de donde se descargó el programa
-# no me corrió
+## no me corrió
 
 ```b
 /home/abigaylmontantearenas/Documents/practicas/MODELOS/doc/gapseq/gapseq doall toy/C2RQJT_1_rerun_NS_M2_01_25_2.fna
@@ -1370,6 +1369,7 @@ octave --gui
 
 ¿Cómo construir un modelo metabólico a escala genómica en **kbase**
 
+referencia
 
 1. El genoma debe estar anotado o re-anotado con RAST, esto antes de crear un borrador del modelo metabólico de un organismo, es necesario porque las anotaciones funcionales SEED generadas por RAST están vinculadas directamente a las reacciones bioquímicas en la base de datos de bioquímica ModelSEED, utilizada por KBase para el modelado metabólico. 
 2. Construye un borrador de tu modelo metabolico con la app de: MS2 - Build Prokaryotic Metabolic Models
@@ -1380,6 +1380,10 @@ En kbase descagué el archivo que tiene para el medio LB y dividí los valores p
 
 si me generó el modelo que ocupo, mañana correr en gapseq a primera hora pa no tardarme tanto
 
+[referencia](https://kbase.us/n/18302/109/)
+
+
+[objetos kbase](https://docs.kbase.us/data/upload-download-guide/data-types)
 # 062525
 ```
 gapseq fill -m $RC3-draft.RDS -n LBmed.csv -c $RC3-rxnWeights.RDS -g $RC3-rxnXgenes.RDS -b 100
@@ -1598,3 +1602,83 @@ for i in trace_metabolites:
 * estáticos, permanecen constantes durante la simulación, como si fueran ilimitados.
 
 ver otros parametros
+
+# 070125
+
+Modelo consenso
+Pasos generales:
+1. Convertir y traducir los borrados de los modelos a namespace MNXref
+MetaNetX/MNXref es un namespace para merabolitos y reaciones bioquímicas diseñado para estandarizar información entre diferentes bases de datos y modelos metabolicos a escala genómica (GEM). UNe y unifica la información de varias fuentes para facilitar la comparación y análisis de los modelos metabólicos. 
+* Un namespace es solo una forma de agrupar cosas con nombres únicos, evitando choques de nombres y organizando mejor el código.
+
+MNXref es un diccionario multi lenguaje para reacciones y metabolitos, los une a los datos públicos de fuentes relacionadas al metabolismo 
+
+1. Remover todos las reacciones de intercambio y biomasa de los modelos 
+2. añadir fórmulas de metabolitos
+3. unir modelos de diferentes métodos
+4. agrega la biomada universal de procariotas a todos los modelos
+5. Rellenas huecos (gap filling (COMMIT)
+
+
+# 
+ver reacciones de mis modelos GEM
+
+# 070225
+```bash
+carve RC3LPC_1_NS_M1_01_25.faa
+ -o cm_RC3.xml
+
+carve C2RQJT_1_rerun_NS_M2_01_25_2.faa
+- o cm_C2R
+```
+13:00 - 13:12
+13:13
+
+```bash
+export PATH=$PATH:$(pwd)
+./gapseq test
+```
+
+# 071025
+
+SMETANA; https://github.com/cdanielmachado/smetana?tab=readme-ov-file
+COMPARASION DE LOS GEM: https://sysbiochalmers.github.io/Human-GEM-guide/gem_comparison/
+
+# 080525
+
+```bash 
+gapseq find -p all -b 200 -m auto -t auto $bac60.fna
+```
+
+Carve me no puedo hacer medio LB al 10% solo identifica presencia y ausencia 
+
+# 081825
+
+El ambiente del modelo, que experimentalmente es el medio de cultivo, representa todos los metbolitos y co factores disponible en el organismo de sus modelos metabólicos re construidos 
+los flujos se mide en:
+mmol/ gr Dw h
+concentración por peso seco hora, por ejemplo: 1 mol de glucosa cada 24 h a 1 gr de bacteria, su flujo es:
+1 mol / (1 g Dw)(24 h)
+
+la importación de metabolitos y co factores no garantiza que pueda ser consumido
+
+EL medio mínimo es el medio de cultivo más pequeño que puede mantener la tasa de crecimiento específica
+SI queremos que la bacteria crezca al menos 0.1 g aun que no sea el crecimento máximo posible
+
+```bash 
+minimal_medium(ST109, 0.1, minimize_components=True)
+```
+ST09 es el modelo
+0.1 la biomasa mínima que quiero forzar 
+minimize_components=True medio con el menor número de nutrientes
+
+Por el contrario, puede encontrar el medio mínimo para la mayor biomasa posible
+
+```bash 
+max_growth = ST109.slim_optimize()
+print("Crecimiento máximo:", max_growth)
+
+min_med = minimal_medium(ST109, max_growth)
+print("\nMedio mínimo para crecimiento máximo:")
+print(min_med)
+```
