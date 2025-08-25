@@ -584,43 +584,58 @@ comp_assay.run()
 
 
 serial_params=c.params()
-serial_params.set_param('maxCycles',960*6) #### to change
-serial_params.set_param('batchDilution',True)
+#serial_params.set_param('maxCycles',960*6) #### to change
+#serial_params.set_param('batchDilution',True)
 
-serial_params.set_param('dilFactor',0.1)
+#serial_params.set_param('dilFactor',0.1)
 
-serial_params.set_param('dilTime',48)
+#serial_params.set_param('dilTime',48)
 
-serial_params.set_param('defaultVmax',10) #### to change
-serial_params.set_param('defaultKm',0.01)
+#serial_params.set_param('defaultVmax',10) #### to change
+#serial_params.set_param('defaultKm',0.01)
 
-serial_params.set_param('exchangestyle','Monod Style')
+#serial_params.set_param('exchangestyle','Monod Style')
 
-serial_params.set_param('timeStep',0.05) #### to change
+#serial_params.set_param('timeStep',0.05) #### to change
 
-serial_params.set_param('spaceWidth',2.1544)
+#serial_params.set_param('spaceWidth',2.1544)
 
-serial_params.set_param('maxSpaceBiomass',1000)
-serial_params.set_param('minSpaceBiomass',1e-11)
+#serial_params.set_param('maxSpaceBiomass',1000)
+#serial_params.set_param('minSpaceBiomass',1e-11)
 
-serial_params.set_param('defaultHill',1)
+#serial_params.set_param('defaultHill',1)
 
-serial_params.set_param('writeMediaLog',True)
-serial_params.set_param('writeFluxLog',True)
-serial_params.set_param('MediaLogRate',1)
-serial_params.set_param('FluxLogRate',1)
+#serial_params.set_param('writeMediaLog',True)
+#serial_params.set_param('writeFluxLog',True)
+#serial_params.set_param('MediaLogRate',1)
+#serial_params.set_param('FluxLogRate',1)
 
-serial_params.set_param('writeTotalBiomassLog',True)
-serial_params.set_param('writeBiomassLog',True)
-serial_params.set_param('totalBiomassLogRate',1)
-serial_params.set_param('BiomassLogRate',1)
+#serial_params.set_param('writeTotalBiomassLog',True)
+#serial_params.set_param('writeBiomassLog',True)
+#serial_params.set_param('totalBiomassLogRate',1)
+#serial_params.set_param('BiomassLogRate',1)
 
-serial_params.set_param('deathRate',0)
+#serial_params.set_param('deathRate',0)
 
-one_cell=3.9e-13 # gram dry weight of a cell
+#one_cell=3.9e-13 # gram dry weight of a cell
 
 serial_expt=c.comets(test_tube,serial_params)
 serial_expt.run()
+
+
+biomass = serial_expt.total_biomass
+biomass['transfer'] = biomass['cycle'] *comp_assay.parameters.all_params['timeStep']/48
+myplot = biomass.drop(columns=['cycle']).plot(x = 'transfer')
+myplot.set_ylabel("Biomass (gr.)")
+
+
+output_folder = 'graficas/'
+output_path = os.path.join(output_folder, 'rc3_2.png')
+plt.savefig(output_path)
+
+
+plt.show()
+
 
 
 
