@@ -68,13 +68,23 @@ RC3="bac1"
 C2R="bac2"
 ```
 
-## 🐝
- Análisis 
+## 🐝 Análisis 
 
 ### a) Construir modelo metabólico 
 Predicción de reacciones y vías 
 ```
 gapseq find -p all -b 200 -m auto -t auto $RC3.faa
+
+gapseq find -p all -b 200 -m auto -t auto $bac42.faa
+
+gapseq find -p all -b 200 -m auto -t auto $bac164.faa
+
+gapseq find -p all -b 200 -m auto -t auto $bac154.faa
+
+
+
+
+
 ```
 ```
 gapseq find -p all -b 200 -m auto -t auto $C2R.faa
@@ -94,6 +104,8 @@ duración: 3329 s
 
 ```
 gapseq find-transport -b 200 $RC3.faa 
+gapseq find-transport -b 200 $bac154.faa
+
 ```
 ```
 gapseq find-transport -b 200 $C2R.faa
@@ -106,6 +118,8 @@ gapseq find-transport -b 200 $C2R.faa
 
 ```
 gapseq draft -r $RC3-all-Reactions.tbl -t $RC3-Transporter.tbl -p $RC3-all-Pathways.tbl -u 200 -l 100 -c $RC3.faa
+gapseq draft -r $bac154-all-Reactions.tbl -t $bac154-Transporter.tbl -p $bac154-all-Pathways.tbl -u 200 -l 100 -c $bac154.faa
+
 ```
 
 ```
@@ -124,6 +138,8 @@ Se usa para:
 * Identificación de los genes responsables de las nuevas reacciones.
 ```
 gapseq fill -m $RC3-draft.RDS -n LBmed.csv -c $RC3-rxnWeights.RDS -g $RC3-rxnXgenes.RDS -b 100
+gapseq fill -m $bac154-draft.RDS -n LBmed_10.csv -c $bac154-rxnWeights.RDS -g $bac154-rxnXgenes.RDS -b 100
+
 ```
 **¿Dónde encontrar otros medios medios?**
 ALgunos medios vienen por default en la instalción de gap seq, los encuentras en: gapseq/dat/media
@@ -171,4 +187,9 @@ library(curl)
 
 q()
 
+```
+# 070725
+
+```bash
+./gapseq doall C2R.fna.gz
 ```
