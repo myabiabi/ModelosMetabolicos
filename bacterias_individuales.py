@@ -7,6 +7,7 @@ import os
 
 
 
+c2rgem = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/data/carveme_models/LB/new_ST00046.xml')
 
 C2R = c.model(cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/data/carveme_models/ST00046.xml'))
 C2R.id = 'ST00046'
