@@ -1684,3 +1684,26 @@ min_med = minimal_medium(ST109, max_growth)
 print("\nMedio mínimo para crecimiento máximo:")
 print(min_med)
 ```
+
+
+# 260825
+
+```
+git rm nombrearchivo.py
+```
+
+de ecoli descargué el archivo .faa y el .gbff para re conetruir el modelo metabólico 
+[deaquiii](https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000005845.2/)
+
+´´´bash
+carve ecoli.faa -i LB
+gapfill ecoli.xml -m LB -o ecoli_model.xml
+´´´
+lo primero es para definir el ambiente externo, no es gapfilling
+lo segundo si es gapfilling
+
+otra forma de hacer el modelaje
+
+´´´bash
+carve ecoli.faa -g LB -i LB -o ecoli_model2.xml
+´´´
