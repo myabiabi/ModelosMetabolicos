@@ -59,7 +59,8 @@ linux-gnu
 ### Más informaciójn
 [Documentación de GaoSeq](https://gapseq.readthedocs.io/en/latest/)
 
-# 092524
+# 092524"
+
 
 ### vincular con un repositorio
 ```bash
