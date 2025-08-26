@@ -5,6 +5,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
+ST164 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/data/carveme_models/LB/new_ST00164.xml')
+ST60 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/data/carveme_models/LB/new_ST00060.xml')
+ST46 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/data/carveme_models/LB/new_ST00046.xml')
+
 
 ST164 = c.model(cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/data/carveme_models/ST00164.xml'))
 ST164.id = 'ST00164'
