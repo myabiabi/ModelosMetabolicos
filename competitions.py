@@ -230,16 +230,17 @@ import os
 
 ST42_d = c.model(cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/data/ST00042_diamon.xml'))
 ST164_d = c.model(cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/data/ST00164_diamon.xml'))
-ST143_d2 = c.model(cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/data/carveme_models/DIMONT_2/ST00143_d2.xml'))
+ST143d = c.model(cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/data/carveme_models/DIMONT_2/ST00143_d2.xml'))
 
 ST42_d.id ='Pseudomonas'
 ST164_d.id ='Bacillus'
-ST143_d2 = 'Paenibacillus'
+ST143d2 = 'Paenibacillus'
 
 # set its initial biomass, 5e-6 gr at coordinate [0,0]
 ST42_d.initial_pop = [0, 0, 5e-8]
 ST164_d.initial_pop = [0, 0, 5e-8]
-ST143_d2.initial_pop = [0, 0, 5e-8]
+ST143d.initial_pop = [0, 0, 5e-8]
+
 
 
 # create an empty layout
@@ -248,7 +249,7 @@ test_tube = c.layout()
 # add the models to the test tube
 test_tube.add_model(ST42_d)
 test_tube.add_model(ST164_d)
-test_tube.add_model(ST143_d2)
+test_tube.add_model(ST143d)
 
 
 
