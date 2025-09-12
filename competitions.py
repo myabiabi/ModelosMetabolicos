@@ -234,7 +234,7 @@ ST143d = c.model(cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents
 
 ST42_d.id ='Pseudomonas'
 ST164_d.id ='Bacillus'
-ST143d2 = 'Paenibacillus'
+ST143d.id ='Paenibacillus'
 
 # set its initial biomass, 5e-6 gr at coordinate [0,0]
 ST42_d.initial_pop = [0, 0, 5e-8]
