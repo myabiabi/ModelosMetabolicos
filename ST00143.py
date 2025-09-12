@@ -236,7 +236,7 @@ ST143_d2.initial_pop = [0, 0, 5e-8]
 test_tube = c.layout()
 
 # add the models to the test tube
-test_tube.add_model(ST00143_d2)
+test_tube.add_model(ST143_d2)
 
 
 test_tube.set_specific_metabolite("h2o_e", 100)
@@ -313,10 +313,9 @@ sim_params = c.params()
 experiment = c.comets(test_tube, sim_params)
 experiment.run()
 
-ax = experiment.total_biomass.plot(x = 'cycle', color = 'purple')
+ax = experiment.total_biomass.plot(x = 'cycle', color = 'yellow')
 ax.set_ylabel("Biomass (gr.)")
 
 output_folder = 'graficas/CARVEME/DIMONT_2'
 output_path = os.path.join(output_folder, '143_d2.png')
 plt.savefig(output_path)
-plt.show
