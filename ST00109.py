@@ -216,16 +216,20 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
-ST00109 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/DEFAULT/carve109.xml')
-#ST00109 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/0_1data/carveme_models/DIAMONT/')
-#ST00109 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/0_1data/carveme_models/DIAMONT_2/')
+#ST00109 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/DEFAULT/carve109.xml')
+#ST00109 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/DIAMONT/ST00042_diamon.xml')
+ST00109 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/DIAMONT_2/ST00042dd.xml')
 ST109 = c.model(ST00109)
+
 # set its initial biomass, 5e-6 gr at coordinate [0,0]
 ST109.initial_pop = [0, 0, 5e-8]
+
 # create an empty layout
 test_tube = c.layout()
+
 # add the models to the test tube
 test_tube.add_model(ST109)
+
 test_tube.set_specific_metabolite("h2o_e", 100)
 test_tube.set_specific_metabolite("o2_e", 10)
 test_tube.set_specific_metabolite("pi_e", 10)
@@ -293,12 +297,13 @@ trace_metabolites = ['ca2_e', 'cl_e', 'cobalt2_e', 'cu2_e', 'fe2_e', 'fe3_e', 'h
 for i in trace_metabolites:
     test_tube.set_specific_metabolite(i, 1000)
     test_tube.set_specific_static(i, 1000)
+    
 sim_params = c.params()
 experiment = c.comets(test_tube, sim_params)
 experiment.run()
 
 ax = experiment.total_biomass.plot(x = 'cycle', color = 'pink')
 ax.set_ylabel("Biomass (gr.)")
-output_folder = '03_graficas/CARVEME/'
+output_folder = '03_graficas/CARVEME/DIAMONT_2'
 output_path = os.path.join(output_folder, 'ST00109.png')
 plt.savefig(output_path)
