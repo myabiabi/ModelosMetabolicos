@@ -894,8 +894,8 @@ import matplotlib.pyplot as plt
 import os
 
 #ST00164 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/DEFAULT/carve164.xml')
-#ST00164 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/DIAMONT/ST00164_diamon.xml')
-ST00164 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/DIAMONT_2/ST00164dd.xml')
+ST00164 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/DIAMONT/ST00164_diamon.xml')
+#ST00164 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/DIAMONT_2/ST00164dd.xml')
 ST164 = c.model(ST00164)
 
 # set its initial biomass, 5e-6 gr at coordinate [0,0]
@@ -981,6 +981,6 @@ experiment.run()
 
 ax = experiment.total_biomass.plot(x = 'cycle', color = 'green')
 ax.set_ylabel("Biomass (gr.)")
-output_folder = '03_graficas/CARVEME/DIAMONT_2'
+output_folder = '03_graficas/CARVEME/DIAMONT'
 output_path = os.path.join(output_folder, 'ST00164.png')
 plt.savefig(output_path)

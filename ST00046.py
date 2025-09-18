@@ -528,6 +528,7 @@ import os
 #ST00046 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/DIAMONT/ST00046_diamon.xml')
 ST00046 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/DIAMONT_2/ST00046dd.xml')
 ST46 = c.model(ST00046)
+ST46.id = 'ST00046'
 
 # set its initial biomass, 5e-6 gr at coordinate [0,0]
 ST46.initial_pop = [0, 0, 5e-8]
