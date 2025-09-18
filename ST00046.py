@@ -515,7 +515,9 @@ output_folder = 'graficas'
 output_path = os.path.join(output_folder, '080425_4.png')
 plt.savefig(output_path)
 
-
+# ===============
+# 091725
+# ====================
 # 091725
 import cometspy as c
 import cobra.io
@@ -523,19 +525,19 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
-#ST00109 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/DEFAULT/carve42.xml')
-#ST00109 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/DIAMONT/ST00042_diamon.xml')
-ST00109 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/DIAMONT_2/ST00042dd.xml')
-ST109 = c.model(ST00109)
+#ST00046 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/DEFAULT/carve46.xml')
+#ST00046 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/DIAMONT/ST00046_diamon.xml')
+ST00046 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/DIAMONT_2/ST00046dd.xml')
+ST46 = c.model(ST00046)
 
 # set its initial biomass, 5e-6 gr at coordinate [0,0]
-ST109.initial_pop = [0, 0, 5e-8]
+ST46.initial_pop = [0, 0, 5e-8]
 
 # create an empty layout
 test_tube = c.layout()
 
 # add the models to the test tube
-test_tube.add_model(ST109)
+test_tube.add_model(ST46)
 
 test_tube.set_specific_metabolite("h2o_e", 100)
 test_tube.set_specific_metabolite("o2_e", 10)
@@ -609,9 +611,8 @@ sim_params = c.params()
 experiment = c.comets(test_tube, sim_params)
 experiment.run()
 
-ax = experiment.total_biomass.plot(x = 'cycle', color = 'purple')
+ax = experiment.total_biomass.plot(x = 'cycle', color = 'red')
 ax.set_ylabel("Biomass (gr.)")
 output_folder = '03_graficas/CARVEME/DIAMONT_2'
 output_path = os.path.join(output_folder, 'ST00046.png')
 plt.savefig(output_path)
-

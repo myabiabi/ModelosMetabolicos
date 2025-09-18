@@ -335,7 +335,7 @@ ST42.initial_pop = [0, 0, 5e-8]
 test_tube = c.layout()
 
 # add the models to the test tube
-test_tube.add_model(ST109)
+test_tube.add_model(ST42)
 
 test_tube.set_specific_metabolite("h2o_e", 100)
 test_tube.set_specific_metabolite("o2_e", 10)

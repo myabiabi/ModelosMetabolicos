@@ -209,7 +209,9 @@ output_folder = 'graficas/CARVEME/DIMONT'
 output_path = os.path.join(output_folder, 'ST00109_dimont.png')
 plt.savefig(output_path)
 
+# ======================
 # 091725
+# =======================
 import cometspy as c
 import cobra.io
 import pandas as pd
