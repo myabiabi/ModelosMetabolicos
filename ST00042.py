@@ -314,9 +314,10 @@ output_folder = 'graficas/CARVEME'
 output_path = os.path.join(output_folder, '422_2.png')
 plt.savefig(output_path)
 
+# ========================
 # 170925
+# =======================
 
-# 091725
 import cometspy as c
 import cobra.io
 import pandas as pd
@@ -325,7 +326,7 @@ import os
 
 #ST00042 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/DEFAULT/carve42.xml')
 #ST00042 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/DIAMONT/ST00042_diamon.xml')
-ST00042 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/DIAMONT_2/ST00042dd.xml')
+#ST00042 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/DIAMONT_2/ST00042dd.xml')
 ST42 = c.model(ST00042)
 
 # set its initial biomass, 5e-6 gr at coordinate [0,0]
