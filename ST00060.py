@@ -329,7 +329,6 @@ import cobra.io
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
-
 #ST00060 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/DEFAULT/carve60.xml')
 #ST00060 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/DIAMONT/ST00060_diamon.xml')
 ST00060 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/DIAMONT_2/ST00060dd.xml')
