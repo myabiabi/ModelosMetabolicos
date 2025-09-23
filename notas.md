@@ -1707,3 +1707,17 @@ otra forma de hacer el modelaje
 ´´´bash
 carve ecoli.faa -g LB -i LB -o ecoli_model2.xml
 ´´´
+
+# 092309 
+Modelo de e.coli para que sea mi control
+´´´bash 
+carve ST00000.faa -o ~/Documents/practicas/MODELOS/01_data/models_carveme/DEFAULF/ecoli.xml
+
+carve ST00000.faa --diamond-args="-e 1e-5 --top 10" -o ~/Documents/practicas/MODELOS/01_data/models_carveme/e10top10/carve00.xml
+
+carve ST00000.faa --diamond-args="-e 1e-10 --top 10" -o ~/Documents/practicas/MODELOS/01_data/models_carveme/e10top10/carve00.xml
+
+´´´
+
+comprimir archivos varios de una sola carpeta
+for f in *.faa; do gzip "$f"; done
