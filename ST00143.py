@@ -335,6 +335,7 @@ import os
 #ST00143 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/DIAMONT/ST00143_diamon.xml')
 ST00143 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/DIAMONT_2/ST00143dd.xml')
 ST143 = c.model(ST00143)
+ST143.id = "Paenibacillus"
 
 # set its initial biomass, 5e-6 gr at coordinate [0,0]
 ST143.initial_pop = [0, 0, 5e-8]

@@ -325,9 +325,10 @@ import matplotlib.pyplot as plt
 import os
 
 #ST00042 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/DEFAULT/carve42.xml')
-#ST00042 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/DIAMONT/ST00042_diamon.xml')
+ST00042 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/DIAMONT/ST00042_diamon.xml')
 #ST00042 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/DIAMONT_2/ST00042dd.xml')
 ST42 = c.model(ST00042)
+ST42.id = "Pseudomonas"
 
 # set its initial biomass, 5e-6 gr at coordinate [0,0]
 ST42.initial_pop = [0, 0, 5e-8]
@@ -412,6 +413,6 @@ experiment.run()
 
 ax = experiment.total_biomass.plot(x = 'cycle', color = 'purple')
 ax.set_ylabel("Biomass (gr.)")
-output_folder = '03_graficas/CARVEME/DIAMONT_2'
+output_folder = '03_graficas/CARVEME/DIAMONT'
 output_path = os.path.join(output_folder, 'ST00042.png')
 plt.savefig(output_path)

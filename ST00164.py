@@ -897,6 +897,7 @@ import os
 ST00164 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/DIAMONT/ST00164_diamon.xml')
 #ST00164 = cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/DIAMONT_2/ST00164dd.xml')
 ST164 = c.model(ST00164)
+ST164.id = "Bacillus"
 
 # set its initial biomass, 5e-6 gr at coordinate [0,0]
 ST164.initial_pop = [0, 0, 5e-8]
@@ -971,6 +972,7 @@ test_tube.set_specific_metabolite("cbl1_e", 0.01)
 # Add typical trace metabolites and oxygen coli as static
 trace_metabolites = ['ca2_e', 'cl_e', 'cobalt2_e', 'cu2_e', 'fe2_e', 'fe3_e', 'h_e', 'k_e', 'h2o_e', 'mg2_e',
                      'mn2_e', 'mobd_e', 'na1_e', 'ni2_e', 'nh4_e', 'o2_e', 'pi_e', 'so4_e', 'zn2_e']
+
 for i in trace_metabolites:
     test_tube.set_specific_metabolite(i, 1000)
     test_tube.set_specific_static(i, 1000)
