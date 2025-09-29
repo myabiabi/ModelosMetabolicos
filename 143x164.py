@@ -109,3 +109,4 @@ ax.set_ylabel("Biomass (gr.)")
 output_folder = '03_graficas/CARVEME/'
 output_path = os.path.join(output_folder, "143x164")
 plt.savefig(output_path)
+##
