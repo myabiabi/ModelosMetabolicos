@@ -1721,3 +1721,13 @@ carve ST00000.faa --diamond-args="-e 1e-10 --top 10" -o ~/Documents/practicas/MO
 
 comprimir archivos varios de una sola carpeta
 for f in *.faa; do gzip "$f"; done
+
+gapseq find-transport -b 200 $mleteus149.faa 
+
+
+gapseq draft -r $mleteus149-all-Reactions.tbl -t $mleteus149-Transporter.tbl -p $mleteus149-all-Pathways.tbl -u 200 -l 100 -c $mleteus149.faa
+
+gapseq draft -r $mleteus149-all-Reactions.tbl -t $mleteus149-Transporter.tbl -p $mleteus149-all-Pathways.tbl -u 200 -l 100 -c $mleteus149.faa
+
+
+gapseq draft -r $b42-all-Reactions.tbl -t $b42-Transporter.tbl -p $b42-all-Pathways.tbl -u 200 -l 100 -c $b42.faa
