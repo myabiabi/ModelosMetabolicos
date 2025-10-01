@@ -110,4 +110,4 @@ INPUT_DIR="/mnt/data/sur/users/mmontante/input"
  echo "===== Pipeline done ====="
  date
 '''
-a
+ad
