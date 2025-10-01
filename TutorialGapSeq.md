@@ -110,4 +110,42 @@ INPUT_DIR="/mnt/data/sur/users/mmontante/input"
  echo "===== Pipeline done ====="
  date
 '''
-ad
+
+
+##############################
+
+#!/bin/bash
+ #SBATCH --job-name=gapseq
+ #SBATCH --output=%x.log
+ #SBATCH --error=%x.error
+ #SBATCH --time=240:00:00
+ #SBATCH --cpus-per-task=8
+ #SBATCH --mem=8G
+
+ # Info del script
+ # gapsec bacteria rizo
+
+ date
+ echo "===== Beginning pipeline ====="
+
+ eval "$(conda shell.bash hook )"
+ conda activate gapseq
+
+ # comand line
+
+
+INPUT_DIR="/mnt/data/sur/users/mmontante/data/gem_gapseq"
+ OUTPUT_DIR="/mnt/data/sur/users/mmontante/output"
+
+ mkdir -p "$OUTPUT_DIR"
+
+     gapseq draft -r ST00042-all-Reactions.tbl -t ST00042-Transporter.tbl -p ST00042-all-Pathways.tbl -c /mnt/data/sur/users/mmontante/input
+\
+         --outdir "$OUTPUT_DIR/$base" \
+         --prefix "$base" \
+         --cpus 8 \
+         --kingdom Bacteria
+ done
+
+ echo "===== Pipeline done ====="
+ date
