@@ -71,42 +71,9 @@ for met_id, conc in metabolites_to_set.items():
 print("\n===== Creando y Ejecutando la Simulación COMETS =====")
 experiment = c.comets(test_tube, sim_params)
 experiment.run()
-results_df = experiment.biomass
-
 
 # --- 4. CICLO DE GRAFICACIÓN INDIVIDUAL ---
 
+biomas = experiment.total_biomass
+
 # Preparar la carpeta de salida
-os.makedirs(output_folder, exist_ok=True) 
-model_ids_in_results = results_df['model'].unique()
-num_models_in_results = len(model_ids_in_results)
-colors = plt.cm.get_cmap('viridis', num_models_in_results) 
-
-print(f"\nGuardando {num_models_in_results} gráficas individuales en {output_folder}...")
-
-for i, model_id in enumerate(model_ids_in_results):
-    
-    cepa_data = results_df[results_df['model'] == model_id]
-    
-    plt.figure(figsize=(8, 5))
-    ax = plt.gca()
-    
-    # Graficar y asignar color único
-    cepa_data.plot(x='cycle', y='biomass', ax=ax, label=model_id, color=colors(i), linewidth=2)
-
-    # Configuración de los ejes
-    ax.set_title(f"Biomasa a lo largo del tiempo para {model_id}")
-    ax.set_ylabel("Biomass (gr.)")
-    ax.set_xlabel("Ciclo de Simulación")
-    
-    # Construcción dinámica del nombre del archivo
-    file_name = f"{model_id}_Biomass.png"
-    output_path = os.path.join(output_folder, file_name)
-    
-    plt.legend().set_visible(False) # Ocultar la leyenda si solo se grafica 1
-    plt.savefig(output_path)
-    plt.close() 
-    
-    print(f"Gráfico guardado: {file_name}")
-
-print("\nGuardado de gráficas individuales completado.")

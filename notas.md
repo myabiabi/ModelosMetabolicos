@@ -2087,3 +2087,56 @@ done
 conda deactivate
 echo -e "\nTodos los modelos han sido rellenados y exportados."
 date
+
+# 100925
+
+#!/bin/bash
+ #SBATCH --job-name=prokka
+ #SBATCH --output=%x.log
+ #SBATCH --error=%x.error
+ #SBATCH --time=240:00:00
+ #SBATCH --cpus-per-task=8
+ #SBATCH --mem=8G
+ 
+ 
+ # Info del script
+ # prokka bacterias rizo
+ date
+ echo "===== Beginning pipeline ====="
+ eval "$(conda shell.bash hook )"
+ conda activate prokka
+
+ # comand line 
+
+
+INPUT_DIR="/mnt/data/sur/users/mmontante/data/rizo_data/raw_genomes"
+ OUTPUT_DIR="/mnt/data/sur/users/mmontante/data/rizo_data/prokka"
+ 
+ for file in "$INPUT_DIR"/*.fasta; do
+     # Nombre base del archivo (sin ruta, sin extensión)
+     base=$(basename "$file" .fasta)
+ 
+     echo "Anotando genoma: $base"
+ 
+     prokka "$file" \
+         --outdir "$OUTPUT_DIR/$base" \
+         --prefix "$base" \
+         --cpus 8 \
+         --kingdom Bacteria
+ done
+
+
+ echo "===== Pipeline done ====="
+ date
+
+
+########################
+for file in *.faa; do
+    base=$(basename "$file" .faa)
+    echo "Generando modelo para $base..."
+    carveme "$file" --gapfill LB -o "${base}.xml"
+done
+
+
+carve genome.faa --gapfill M9,LB
+
