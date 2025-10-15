@@ -5,8 +5,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
-bac_model = c.model(cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/models_carveme/prokka/lb/ST00109.xml'))
-bac_model.id = 'b.thuringensis'
+bac_model = c.model(cobra.io.read_sbml_model('/home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/4c_data/prokka/Staphylococcus_shinii.xml'))
+bac_model.id = 'S.shinii'
 
 
 # set its initial biomass, 5e-6 gr at coordinate [0,0]
@@ -92,24 +92,12 @@ for i in trace_metabolites:
 sim_params = c.params()
 experiment = c.comets(test_tube, sim_params)
 experiment.run()
-experiment.total_biomass
-#ax = experiment.total_biomass.plot(x = 'cycle', color = 'green')
-#ax.set_ylabel("Biomass (gr.)")
 
-#output_folder = '03_graficas/'
-#output_path = os.path.join(output_folder, 'ST00164_.png')
-#plt.savefig(output_path)
+ax = experiment.total_biomass.plot(x = 'cycle', color = 'grey')
+ax.set_ylabel("Biomass (gr.)")
 
-# Asumimos que 'experiment' es tu objeto de simulación ejecutado.
-# Asegúrate de tener 'import pandas as pd' al inicio del script.
+output_folder = '03_graficas/4c'
+output_path = os.path.join(output_folder, 'Staphylococcus_shinii.png')
+plt.savefig(output_path)
 
-print("\n--- Primeras 10 Filas de la Biomasa Total ---")
 
-# Usa .head(10) para obtener las 10 primeras filas.
-# Usa .to_string() para que Pandas imprima la tabla completa sin truncar.
-# Asumimos que 'experiment' es tu objeto de simulación ejecutado.
-
-print("\n--- Filas 80 a 100 de la Biomasa Total ---")
-
-# Usamos .iloc para seleccionar por posición: desde el índice 79 hasta el 100 (exclusivo)
-print(experiment.total_biomass.iloc[60:80].to_string())

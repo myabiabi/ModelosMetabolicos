@@ -1,0 +1,75 @@
+model_file ./.cmd 
+  model_world
+    grid_size 1 1
+    world_media
+      ca2_e 1000
+      cl_e 0.1
+      cobalt2_e 10
+      cu2_e 0.1
+      fe2_e 10
+      fe3_e 10
+      h_e 0.1
+      k_e 10
+      h2o_e 1000
+      mg2_e 10
+      mn2_e 10
+      mobd_e 1000
+      na1_e 10
+      ni2_e 1000
+      nh4_e 1000
+      o2_e 10
+      pi_e 10
+      so4_e 0.1
+      zn2_e 10
+      prbamp_e 10
+      glu__L_e 0.1
+      gly_e 0.1
+      ala__L_e 0.1
+      lys__L_e 0.1
+      asp__L_e 0.1
+      arg__L_e 0.1
+      ser__L_e 0.1
+      met__L_e 0.1
+      trp__L_e 0.1
+      phe__L_e 0.1
+      tyr__L_e 0.1
+      cys__L_e 0.1
+      ura_e 0.1
+      leu__L_e 0.1
+      his__L_e 0.1
+      pro__L_e 0.1
+      val__L_e 0.1
+      thr__L_e 0.1
+      adn_e 0.01
+      thymd_e 0.01
+      h2s_e 0.01
+      ins_e 0.01
+      uri_e 0.01
+      gsn_e 0.01
+      ile__L_e 0.1
+      skm_e 0.01
+      fol_e 0.01
+      dadn_e 0.01
+      lipoate_e 0.01
+      cd2_e 10
+      aso4_e 10
+      cro4_e 10
+      nh3_c_e 10
+      pheme_e 10
+      cmp_e 10
+      ump_e 10
+      gmp_e 10
+      pydx_e 10
+      nac_e 10
+      ribflv_e 10
+      pphn_e 10
+      hxan_e 10
+      thmpp_e 0.01
+      cbl1_e 0.01
+    //
+    static_media 1 1000 1 1000 1 1000 1 1000 1 1000 1 1000 1 1000 1 1000 1 1000 1 1000 1 1000 1 1000 1 1000 1 1000 1 1000 1 1000 1 1000 1 1000 1 1000 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+    //
+  //
+  initial_pop
+  //
+//

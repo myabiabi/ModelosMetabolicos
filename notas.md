@@ -1733,106 +1733,88 @@ gapseq draft -r $mleteus149-all-Reactions.tbl -t $mleteus149-Transporter.tbl -p 
 gapseq draft -r $b42-all-Reactions.tbl -t $b42-Transporter.tbl -p $b42-all-Pathways.tbl -u 200 -l 100 -c $b42.faa
 
 
+# 031025
 
-
-##################################################
 #!/bin/bash
 
-# Define la carpeta que contiene tus archivos
-INPUT_DIR="toy"
+# Define la carpeta que contiene tu
+#SBATCH --output=%x.log
+#SBATCH --error=%x.error
+#SBATCH --time=120:00:00 
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=8G
+#SBATCH --partition=TU_PARTICION_CORRECTA # <--- ¡REEMPLAZA ESTO!
 
-# Itera sobre todos los archivos .fna.gz que empiezan con 'ST' en la carpeta toy
-# La variable 'genome_file' contendrá la RUTA completa (ej: toy/ST01.fna.gz)
+date
+echo "===== Inicio del Pipeline gapseq (GAPFILLING y EXPORTACIÓN) ====="
 
-for genome_file in "$INPUT_DIR"/ST*.fna.gz; do
+# Configuración de Entorno
+eval "$(conda shell.bash hook )"
+conda activate gapseq
+echo "Entorno Conda 'gapseq' activado."
 
-    # 1. Extraer el NOMBRE BASE del archivo genómico (ej: ST01)
-    #    Esto quita la ruta (toy/) y la extensión (.fna.gz)
-    genome_base=$(basename "$genome_file" .fna.gz)
+# Directorios de entrada y referencia
+REF_BASE_DIR="/mnt/data/sur/users/mmontante/data/gem_gapseq"
 
-    echo "--- Procesando genoma: $genome_base ---"
+# Define la ruta de la carpeta de resultados del DRAFT (DEBE COINCIDIR con la fecha del DRAFT)
+DRAFT_DIR_PREFIX="gapseq_results_$(date +%Y%m%d)" # Se recomienda usar la fecha en que se ejecutó el DRAFT.
+                                                  # Si el DRAFT fue ayer, cambia $(date +%Y%m%d) por la fecha exacta, e.g., "gapseq_results_20251002"
 
-    # 2. Definir las rutas completas de las tablas de entrada
-    #    Esto asume que tus tablas SÍ existen y están nombradas correctamente
-    #    (Ej: toy/ST01-all-Reactions.tbl, etc.)
-    REACTIONS_TBL="$INPUT_DIR/$genome_base-all-Reactions.tbl"
-    TRANSPORTER_TBL="$INPUT_DIR/$genome_base-Transporter.tbl"
-    PATHWAYS_TBL="$INPUT_DIR/$genome_base-all-Pathways.tbl"
+DRAFT_MODELS_BASE_DIR="${SLURM_SUBMIT_DIR}/${DRAFT_DIR_PREFIX}"
 
-    # 3. Verificar si existen los archivos necesarios antes de ejecutar el draft
-    if [[ -f "$REACTIONS_TBL" && -f "$TRANSPORTER_TBL" && -f "$PATHWAYS_TBL" ]]; then
-        
-        # 4. Ejecutar el comando gapseq draft
-        ./gapseq draft \
-            -r "$REACTIONS_TBL" \
-            -t "$TRANSPORTER_TBL" \
-            -p "$PATHWAYS_TBL" \
-            -c "$genome_file"
-    else
-        echo "¡Error! No se encontraron todos los archivos de tabla para $genome_base."
-    fi
+# Medio de cultivo para Gapfilling: Usamos LB.csv, asumiendo que está en la ruta base de referencia.
+MEDIA_FILE="${REF_BASE_DIR}/dat/media/LB.csv"
 
+echo "Buscando modelos en: ${DRAFT_MODELS_BASE_DIR}"
+
+# Bucle principal: Itera sobre los directorios de muestras creados en el paso anterior (STxxxx)
+for SAMPLE_WORK_DIR in "${DRAFT_MODELS_BASE_DIR}"/ST*; do
+
+    # Verifica si el directorio existe y es un directorio válido (contiene resultados del DRAFT)
+    [ ! -d "$SAMPLE_WORK_DIR" ] && continue
+
+    SAMPLE_ID=$(basename "$SAMPLE_WORK_DIR")
+    
+    echo -e "\n--- Procesando GAPFILLING de Muestra: ${SAMPLE_ID} ---"
+    
+    # Nos movemos al directorio de trabajo de la muestra
+    cd "$SAMPLE_WORK_DIR" || exit 1
+    
+    # Rutas esperadas del modelo borrador generado en el Paso 1
+    DRAFT_RDS="${SAMPLE_ID}-draft.RDS"
+    RXN_WEIGHTS_RDS="${SAMPLE_ID}-rxnWeights.RDS"
+    RXN_X_GENES_RDS="${SAMPLE_ID}-rxnXgenes.RDS"
+    
+    # -----------------------------------------------------------
+    # PASO 1: GAPFILLING (Relleno de Huecos)
+    # Sobreescribe el RDS con el modelo corregido, usando LB.csv
+    # -----------------------------------------------------------
+    gapseq fill \
+        -m "$DRAFT_RDS" \
+        -c "$RXN_WEIGHTS_RDS" \
+        -g "$RXN_X_GENES_RDS" \
+        -n "$MEDIA_FILE"
+
+    # -----------------------------------------------------------
+    # PASO 2: EXPORTAR el modelo final a XML (SBML)
+    # -----------------------------------------------------------
+    gapseq export \
+        -m "$DRAFT_RDS" \
+        -o "${SAMPLE_ID}-gapfilled-model.xml"
+    
+    echo "Modelo ${SAMPLE_ID} completado y exportado a XML."
+    
 done
 
-echo "--- Proceso completado para todos los archivos ST*.fna.gz. ---"
+conda deactivate
+echo -e "\nTodos los modelos han sido rellenados y exportados."
+date
+echo "===== Pipeline GAPFILLING done ====="
+date
 
 
+# 100725
 
-###########################################
-
-
-#!/bin/bash
- #SBATCH --job-name=gapseq
- #SBATCH --output=%x.log
- #SBATCH --error=%x.error
- #SBATCH --time=240:00:00
- #SBATCH --cpus-per-task=8
- #SBATCH --mem=8G
-
- # Info del script
- # gapfilling
-
- date
- echo "===== Beginning pipeline ====="
-
- eval "$(conda shell.bash hook )"
- conda activate gapseq
-
-
-#########################################################################################
-
-#!/bin/bash
-
-# Define la carpeta que contiene tus archivos
-INPUT_DIR="/mnt/data/sur/users/mmontante/data/gem_gapseq"
-
-for genome_file in "$INPUT_DIR"/ST*.xml; do
-    genome_base=$(basename "$genome_file" .xml)
-
-    echo "--- Procesando genoma: $genome_base ---"
-
-    REACTIONS_TBL="$INPUT_DIR/$genome_base-all-Reactions.tbl"
-    TRANSPORTER_TBL="$INPUT_DIR/$genome_base-Transporter.tbl"
-    PATHWAYS_TBL="$INPUT_DIR/$genome_base-all-Pathways.tbl"
-
-    if [[ -f "$REACTIONS_TBL" && -f "$TRANSPORTER_TBL" && -f "$PATHWAYS_TBL" ]]; then
-        
-        # 4. Ejecutar el comando gapseq draft
-        ./gapseq draft \
-            -r "$REACTIONS_TBL" \
-            -t "$TRANSPORTER_TBL" \
-            -p "$PATHWAYS_TBL" \
-            -c "$genome_file"
-    else
-        echo "¡Error! No se encontraron todos los archivos de tabla para $genome_base."
-    fi
-
-done
-
-echo "--- Proceso completado para todos los archivos ST*.fna.gz. ---"
-
-
-#########################################
 #!/bin/bash
  #SBATCH --job-name=gapseq
  #SBATCH --output=%x.log
@@ -1852,291 +1834,127 @@ echo "--- Proceso completado para todos los archivos ST*.fna.gz. ---"
 
  # comand line
 
-gapseq draft -r /mnt/data/sur/users/mmontante/data/gem_gapseq/ST00042-all-Reactions.tbl -t /mnt/data/sur/users/mmontante/data/gem_gapseq/ST00042-Transporter.tbl -p /mnt/data/sur/users/mmontante/data/gem_gapseq/ST00042-all-Pathways.tbl -c  /mnt/data/sur/users/mmontante/input/ST0042.fna
 
-gapseq draft -r /mnt/data/sur/users/mmontante/data/gem_gapseq/ST00046-all-Reactions.tbl -t /mnt/data/sur/users/mmontante/data/gem_gapseq/ST00046-Transporter.tbl -p /mnt/data/sur/users/mmontante/data/gem_gapseq/ST00046-all-Pathways.tbl -c  /mnt/data/sur/users/mmontante/input/ST0046.fna
+INPUT_DIR="/mnt/data/sur/users/mmontante/input"
+ OUTPUT_DIR="/mnt/data/sur/users/mmontante/output"
 
-gapseq draft -r /mnt/data/sur/users/mmontante/data/gem_gapseq/ST00060-all-Reactions.tbl -t /mnt/data/sur/users/mmontante/data/gem_gapseq/ST00060-Transporter.tbl -p /mnt/data/sur/users/mmontante/data/gem_gapseq/ST00060-all-Pathways.tbl -c  /mnt/data/sur/users/mmontante/input/ST0060.fna
+ mkdir -p "$OUTPUT_DIR"
 
-gapseq draft -r /mnt/data/sur/users/mmontante/data/gem_gapseq/ST00109-all-Reactions.tbl -t /mnt/data/sur/users/mmontante/data/gem_gapseq/ST00109-Transporter.tbl -p /mnt/data/sur/users/mmontante/data/gem_gapseq/ST00109-all-Pathways.tbl -c  /mnt/data/sur/users/mmontante/input/ST00109.fna
+ for file in "$INPUT_DIR"/ST*.fna; do
+     base=$(basename "$file" .fna)
 
-gapseq draft -r /mnt/data/sur/users/mmontante/data/gem_gapseq/ST00143-all-Reactions.tbl -t /mnt/data/sur/users/mmontante/data/gem_gapseq/ST00143-Transporter.tbl -p /mnt/data/sur/users/mmontante/data/gem_gapseq/ST00143-all-Pathways.tbl -c  /mnt/data/sur/users/mmontante/input/ST00143.fna
-
- done
- echo "===== Pipeline done ====="
- date
-
-
-# 100325
-#!/bin/bash
-# creación del Modelo Borrador
-
-# SLURM Directives
-#SBATCH --job-name=gapseq_draft
-#SBATCH --output=%x.log
-#SBATCH --error=%x.error
-#SBATCH --time=120:00:00 
-#SBATCH --cpus-per-task=8
-#SBATCH --mem=8G
-
-date
-echo "===== Inicio del Pipeline gapseq - DRA====="
-
-# Configuración de Entorno
-eval "$(conda shell.bash hook )"
-conda activate gapseq
-echo "Entorno Conda 'gapseq' activado."
-
-# Directorios de entrada y referencia
-REF_BASE_DIR="/mnt/data/sur/users/mmontante/data/gem_gapseq"
-INPUT_FNA_DIR="/mnt/data/sur/users/mmontante/input"
-
-# Directorio principal de resultados 
-OUTPUT_DIR="${SLURM_SUBMIT_DIR}/gapseq_results_$(date +%Y%m%d)"
-mkdir -p "$OUTPUT_DIR"
-echo "Directorio de salida de resultados: ${OUTPUT_DIR}"
-
-# Bucle principal para el procesamiento de muestras
-for FNA_FILE in "${INPUT_FNA_DIR}"/ST*.fna; do
-    
-    [ ! -f "$FNA_FILE" ] && continue
-
-    SAMPLE_ID=$(basename "$FNA_FILE" | sed -E 's/\.fna$//')
-    
-    # Define y crea el directorio de trabajo para esta muestra
-    SAMPLE_WORK_DIR="${OUTPUT_DIR}/${SAMPLE_ID}"
-    mkdir -p "$SAMPLE_WORK_DIR"
-    
-    echo -e "\n--- Procesando DRAFT de Muestra: ${SAMPLE_ID} ---"
-    
-    # Cambia al directorio de trabajo de la muestra
-    cd "$SAMPLE_WORK_DIR" || exit 1
-    
-    # Archivos de Referencia Específicos
-    REACT_TBL="${REF_BASE_DIR}/${SAMPLE_ID}-all-Reactions.tbl"
-    TRANS_TBL="${REF_BASE_DIR}/${SAMPLE_ID}-Transporter.tbl"
-    PATHWAYS_TBL="${REF_BASE_DIR}/${SAMPLE_ID}-all-Pathways.tbl"
-
-    # Nombres de archivos de salida intermedios
-    DRAFT_RDS="${SAMPLE_ID}-draft.RDS"
-    RXN_WEIGHTS_RDS="${SAMPLE_ID}-rxnWeights.RDS"
-    RXN_X_GENES_RDS="${SAMPLE_ID}-rxnXgenes.RDS"
-
-    gapseq draft \
-        -r "$REACT_TBL" \
-        -t "$TRANS_TBL" \
-        -p "$PATHWAYS_TBL" \
-        -c "$FNA_FILE"
-
-    mv myb71-draft.RDS "$DRAFT_RDS"
-    mv myb71-rxnWeights.RDS "$RXN_WEIGHTS_RDS"
-    mv myb71-rxnXgenes.RDS "$RXN_X_GENES_RDS"
-    
-    # Regresa al directorio principal para el siguiente ciclo
-    cd "$OUTPUT_DIR"
-    
-done
-
-conda deactivate
-echo -e "\nTodos los DRAFTS han finalizado."
-date
-echo "===== Pipeline DRAFT done ====="
-
-
-#########################
-#!/bin/bash
-# Gapfilling y Exportación a XML).
-
-#SBATCH --job-name=gapseq_fill
-#SBATCH --output=%x.log
-#SBATCH --error=%x.error
-#SBATCH --time=48:00:00 # Asignar menos tiempo que el draft, ya que es menos intensivo
-#SBATCH --cpus-per-task=1 # El fill usa menos CPUs, podemos optimizar recursos
-#SBATCH --mem=8G
-
-
-date
-echo "===== Inicio del Pipeline gapseq - GAPFILLING ====="
-
-# Configuración de Entorno
-eval "$(conda shell.bash hook )"
-conda activate gapseq
-echo "Entorno Conda 'gapseq' activado."
-
-# Directorio de Referencia (Necesario para el archivo de medio de cultivo)
-REF_BASE_DIR="/mnt/data/sur/users/mmontante/data/"
-MEDIA_FILE="${REF_BASE_DIR}/media/LB.csv" 
-
-
-DRAFT_DIR_PREFIX="gapseq_results_20251003"
-# Usamos el comodín para encontrar la carpeta única generada el día del DRAFT.
-DRAFT_MODELS_BASE_DIR="${SLURM_SUBMIT_DIR}/${DRAFT_DIR_PREFIX}*"
-
-# Bucle principal: Itera sobre los directorios de las muestras (STxxxx)
-for SAMPLE_WORK_DIR in "${DRAFT_MODELS_BASE_DIR}"/ST*/; do
-    
-    # Verifica que el directorio exista y no esté vacío
-    [ ! -d "$SAMPLE_WORK_DIR" ] && continue
-    
-    # Extrae el SAMPLE_ID (ejemplo: ST00042)
-    SAMPLE_ID=$(basename "$SAMPLE_WORK_DIR")
-    
-    # Cambia al directorio de trabajo de la muestra
-    cd "$SAMPLE_WORK_DIR" || exit 1
-    
-    echo -e "\n--- Procesando GAPFILLING & EXPORT de Muestra: ${SAMPLE_ID} ---"
-    
-    # Nombres de archivos
-    DRAFT_RDS="${SAMPLE_ID}-draft.RDS"
-    RXN_WEIGHTS_RDS="${SAMPLE_ID}-rxnWeights.RDS"
-    RXN_X_GENES_RDS="${SAMPLE_ID}-rxnXgenes.RDS"
-    
-    # Archivo de salida final
-    FINAL_XML="${SAMPLE_ID}-gapfilled-model.xml"
-
-    # --- 1. GAPFILLING (Relleno de Huecos) ---
-    # Actualiza el archivo DRAFT_RDS con las reacciones de gapfilling
-    gapseq fill \
-        -m "$DRAFT_RDS" \
-        -c "$RXN_WEIGHTS_RDS" \
-        -g "$RXN_X_GENES_RDS" \
-        -n "$MEDIA_FILE"
-
-    # --- 2. EXPORTACIÓN A XML (SBML) ---
-    # Genera el archivo XML a partir del RDS actualizado (Gapfilled)
-    gapseq export \
-        -m "$DRAFT_RDS" \
-        -o "$FINAL_XML"
-        
-    echo "Modelo XML final guardado en: ${SAMPLE_WORK_DIR}${FINAL_XML}"
-    
-done
-
-conda deactivate
-echo -e "\nTodos los GAPFILLINGS y EXPORTACIONES han finalizado."
-date
-echo "===== Pipeline FILL & EXPORT done ====="
-
-
-
-##################
-#!/bin/bash
-# Gapfilling, archivo final XML
-
-# SLURM Directives
-#SBATCH --job-name=gapseq_gapfilling
-#SBATCH --output=%x.log
-#SBATCH --error=%x.error
-#SBATCH --time=120:00:00 
-#SBATCH --cpus-per-task=8
-#SBATCH --mem=8G
-
-date
-echo "Starting Gapfilling and Export process."
-
-
-# Activa el entorno conda
-eval "$(conda shell.bash hook )"
-conda activate gapseq
-
-# Ruta base de los archivos de referencia (tbl, csv)
-REF_BASE_DIR="/mnt/data/sur/users/mmontante/data/"
-
-# Define la ruta de la carpeta de resultados del DRAFT (debe coincidir con la fecha de la ejecución del draft)
-DRAFT_DIR_PREFIX="gapseq_results_20251003" 
-DRAFT_MODELS_BASE_DIR="${SLURM_SUBMIT_DIR}/${DRAFT_DIR_PREFIX}"
-
-# Medio de cultivo para Gapfilling (LB está por defecto en gapseq)
-MEDIA_FILE="${REF_BASE_DIR}/media/LB.csv"
-
-# Itera sobre los directorios de muestras creados en el paso anterior (STxxxx)
-for SAMPLE_WORK_DIR in "${DRAFT_MODELS_BASE_DIR}"/ST*; do
-
-    # Verifica si el directorio existe y es un directorio válido
-    [ ! -d "$SAMPLE_WORK_DIR" ] && continue
-
-    SAMPLE_ID=$(basename "$SAMPLE_WORK_DIR")
-    
-    echo "Processing $SAMPLE_ID..."
-    
-    # Nos movemos al directorio de trabajo de la muestra
-    cd "$SAMPLE_WORK_DIR" || exit 1
-    
-    # Rutas esperadas del modelo borrador generado en el Paso 1
-    DRAFT_RDS="${SAMPLE_ID}-draft.RDS"
-    RXN_WEIGHTS_RDS="${SAMPLE_ID}-rxnWeights.RDS"
-    RXN_X_GENES_RDS="${SAMPLE_ID}-rxnXgenes.RDS"
-    
-    gapseq fill \
-        -m "$DRAFT_RDS" \
-        -c "$RXN_WEIGHTS_RDS" \
-        -g "$RXN_X_GENES_RDS" \
-        -n "$MEDIA_FILE"
-
-    gapseq export \
-        -m "$DRAFT_RDS" \
-        -o "${SAMPLE_ID}-gapfilled-model.xml"
-    
-    echo "Model $SAMPLE_ID complete and exported to XML."
-    
-done
-
-# -----------------------------------------------------------
-# Limpieza
-# -----------------------------------------------------------
-conda deactivate
-echo -e "\nTodos los modelos han sido rellenados y exportados."
-date
-
-# 100925
-
-#!/bin/bash
- #SBATCH --job-name=prokka
- #SBATCH --output=%x.log
- #SBATCH --error=%x.error
- #SBATCH --time=240:00:00
- #SBATCH --cpus-per-task=8
- #SBATCH --mem=8G
- 
- 
- # Info del script
- # prokka bacterias rizo
- date
- echo "===== Beginning pipeline ====="
- eval "$(conda shell.bash hook )"
- conda activate prokka
-
- # comand line 
-
-
-INPUT_DIR="/mnt/data/sur/users/mmontante/data/rizo_data/raw_genomes"
- OUTPUT_DIR="/mnt/data/sur/users/mmontante/data/rizo_data/prokka"
- 
- for file in "$INPUT_DIR"/*.fasta; do
-     # Nombre base del archivo (sin ruta, sin extensión)
-     base=$(basename "$file" .fasta)
- 
-     echo "Anotando genoma: $base"
- 
-     prokka "$file" \
+    gapseq doall "$file" \
          --outdir "$OUTPUT_DIR/$base" \
          --prefix "$base" \
          --cpus 8 \
          --kingdom Bacteria
  done
 
-
  echo "===== Pipeline done ====="
  date
 
 
-########################
-for file in *.faa; do
-    base=$(basename "$file" .faa)
-    echo "Generando modelo para $base..."
-    carveme "$file" --gapfill LB -o "${base}.xml"
-done
+######################################3
 
 
-carve genome.faa --gapfill M9,LB
 
+#!/bin/bash
+ #SBATCH --job-name=gapseq
+ #SBATCH --output=%x.log
+ #SBATCH --error=%x.error
+ #SBATCH --time=240:00:00
+ #SBATCH --cpus-per-task=8
+ #SBATCH --mem=8G
+
+ # Info del script
+ # gapsec bacteria rizo
+
+ date
+ echo "===== Beginning pipeline ====="
+
+ eval "$(conda shell.bash hook )"
+ conda activate gapseq
+
+ # comand line
+
+
+#####################################
+
+
+#!/bin/bash
+#SBATCH --job-name=gapseq_l
+#SBATCH --output=%x.log
+#SBATCH --error=%x.error
+#SBATCH --time=240:00:00
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=8G
+
+# Info del script
+# gapseq fill batch for rizo data
+
+date
+echo "===== Beginning Gapfilling pipeline ====="
+
+eval "$(conda shell.bash hook)"
+conda activate gapseq
+
+# --- DEFINICIÓN DE DIRECTORIOS ---
+
+MEDIA_DIR="/mnt/data/sur/users/mmontante/data/media"
+INPUT_DIR="/mnt/data/sur/users/mmontante/data/rizo_data/gapseq"
+OUTPUT_DIR="/mnt/data/sur/users/mmontante/data/rizo_data/gapseq_LB"
+
+# Crear el directorio de salida si no existe (crucial)
+mkdir -p "$OUTPUT_DIR"
+
+# --- CICLO FOR PARA MODELOS ---
+
+# Itera sobre todos los archivos de modelo borrador (-draft.RDS)
+for model_file in "$INPUT_DIR"/ST00*-draft.RDS; do 
+
+    # CORRECCIÓN 1: Se separa "$model_file" de "-draft.RDS" en basename
+    prefix=$(basename "$model_file" -draft.RDS)
+
+    echo "--------------------------------------------------------"
+    echo "--- INICIANDO GAPFILLING para el modelo: $prefix ---"
+    echo "--------------------------------------------------------"
+
+    # Definir las rutas con el prefijo correcto
+    DRAFT="$model_file"
+    RXN_WEIGHTS="$INPUT_DIR/$prefix-rxnWeights.RDS"
+    
+    # CORRECCIÓN 2: Se elimina el guion doble (--)
+    RXN_GENES="$INPUT_DIR/$prefix-rxnXgenes.RDS" 
+    
+    MEDIA_FILE="$MEDIA_DIR/LBmed.csv" # Se define la ruta completa del archivo del medio
+    
+    
+    # 3. Verificar la existencia de archivos de soporte
+    if [[ -f "$DRAFT" && -f "$RXN_WEIGHTS" && -f "$RXN_GENES" ]]; then
+
+        # 4. Ejecutar el comando gapseq fill
+        gapseq fill \
+            -m "$DRAFT" \
+            -c "$RXN_WEIGHTS" \
+            -g "$RXN_GENES" \
+            -n "$MEDIA_FILE" \
+            -o "$OUTPUT_DIR/$prefix" 
+            
+        echo "--- GAPFILLING completado para $prefix. Archivo guardado en $OUTPUT_DIR/${prefix}.xml ---"
+
+    else
+        echo "ERROR: Archivos de soporte faltantes para el prefijo $prefix. Saltando."
+        echo "Verificar: DRAFT ($DRAFT), RXN_WEIGHTS ($RXN_WEIGHTS), RXN_GENES ($RXN_GENES)."
+    fi
+
+
+/mnt/data/sur/users/mmontante/data/rizo_data
+
+
+/mnt/data/sur/users/mmontante/data/4C_data/raw_data
+/mnt/data/sur/users/mmontante/data/4C_data/raw_data
+ OUTPUT_DIR="/mnt/data/sur/users/mmontante/data/4C_data/prokka"
+
+
+##
+for file in *.faa; do     base=$(basename "$file" .faa);     echo "Generando modelo para $base...";     carve "$file" --gapfill LB -o "${base}.xml"; done -o /home/abigaylmontantearenas/Documents/practicas/MODELOS/01_data/4c_data/carveme/lb

@@ -90,8 +90,8 @@ sim_params = c.params()
 experiment = c.comets(test_tube, sim_params)
 experiment.run()
 
-ax = experiment.total_biomass.plot(x = 'cycle', color = 'pink')
-ax.set_ylabel("Biomass (gr.)")
-output_folder = '03_graficas/GapSeq/gem_clust_lb'
-output_path = os.path.join(output_folder, 'ST00060.png')
-plt.savefig(output_path)
+#ax = experiment.total_biomass.plot(x = 'cycle', color = 'pink')
+#ax.set_ylabel("Biomass (gr.)")
+#output_folder = '03_graficas/GapSeq/gem_clust_lb'
+#output_path = os.path.join(output_folder, 'ST00060.png')
+#plt.savefig(output_path)
