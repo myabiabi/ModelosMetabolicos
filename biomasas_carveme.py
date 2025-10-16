@@ -1,3 +1,5 @@
+# -------------------------------------------
+# Genoma anotado en prokka y GEM recostruido en carveme
 # --------------------------
 # Cargar paqutes 
 import cometspy as c
