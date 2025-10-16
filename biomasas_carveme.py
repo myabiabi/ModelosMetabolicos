@@ -115,10 +115,10 @@ for model_path in path_list:
             final_models.to_csv(csv_file_name, index=False)
 
             # Guardar resumen
-            final_biomass = final_models['biomass'].iloc[-1]
+            final_biomass = final_models['Biomass (gr.)'].iloc[-1]
             model_summary_data.append([model_id, final_biomass])
 
-            print(f"✅ ÉXITO: {model_id} registrado y guardado en {csv_file_name}")
+            print(f"ÉXITO: {model_id} registrado y guardado en {csv_file_name}")
             print("========================================================")
             print(f"TABLA DE CRECIMIENTO: {model_id}")
             print("========================================================")
@@ -143,3 +143,5 @@ if model_summary_data:
     print(f"\n Resumen de biomasa guardado en: {summary_csv_path}")
 else:
     print("\n No se generaron datos de resumen de biomasa.")
+
+    # --- IMPRESIÓN DEL RESUMEN FINAL (FUERA DEL BUCLE) ---
